@@ -6,6 +6,7 @@ Ext.define('Youngshine.view.kclist.Kclist' ,{
     requires: [
         'Youngshine.view.kclist.KclistModel',
 		'Youngshine.view.kclist.KclistController',
+		'Youngshine.store.Subject',
     ],
 	
 	controller: 'kclist', // links to Youngshine.view.consult.consultController
@@ -58,9 +59,7 @@ Ext.define('Youngshine.view.kclist.Kclist' ,{
 		text: '关闭',
 		//scale: 'medium',
 		width: 55,
-		handler: function(btn){
-			btn.up('window').close()
-		}
+		handler: 'closeView' // default from vwCtrl
 	}],
 	
 	items: [{
@@ -90,13 +89,13 @@ Ext.define('Youngshine.view.kclist.Kclist' ,{
 	         width: 60,
 	         //sortable: false,
 			 menuDisabled: true,
-	         dataIndex: 'kmType' 
+	         dataIndex: 'subjectName' 
 	     }, {
 	         text: '学段',
 	         width: 60,
 	         //sortable: false,
 			 menuDisabled: true,
-	         dataIndex: 'sectionName'
+	         dataIndex: 'gradeName'
 	     }, {
 	         text: '单价',
 	         width: 100,

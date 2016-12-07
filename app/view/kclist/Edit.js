@@ -1,6 +1,9 @@
 Ext.define('Youngshine.view.kclist.Edit', {
     extend: 'Ext.window.Window',
-    alias : 'widget.kclist-edit',
+    //alias : 'widget.kclist-edit',
+	
+	controller: 'kclist',
+	
     title : '修改课程',
     //layout: 'fit',
 	
@@ -14,6 +17,7 @@ Ext.define('Youngshine.view.kclist.Edit', {
 
 	items: [{
 		xtype: 'form',
+		reference: 'editform',
 		bodyPadding: 10,
 		fieldDefaults: {
 			labelWidth: 95,
@@ -23,7 +27,9 @@ Ext.define('Youngshine.view.kclist.Edit', {
 		items: [{
 			xtype: 'textfield',
 			name : 'title',
-			fieldLabel: '课程名称'
+			fieldLabel: '课程名称',
+	        // As a textfield the default property we are binding is "value":
+	        bind: '{theKclist.title}'
 		},{
 			xtype: 'combo',
 			name: 'kcType',
@@ -37,54 +43,46 @@ Ext.define('Youngshine.view.kclist.Edit', {
 			valueField: 'value',
 			displayField: 'value',
 			editable: false,
-			fieldLabel: '类型'
+			fieldLabel: '类型',
+			bind: '{theKclist.kcType}'
 		},{
 			xtype: 'combo',
-			name: 'kmType',
-			store: {
-				fields: ['value'],
-				data : [
-					{"value":"数理化"},
-					{"value":"语政英"},
-					{"value":"史地生"},
-					{"value":"艺术"}
-				]
-			},
-			valueField: 'value',
-			displayField: 'value',
+			name: 'subjectID',
+			store: 'Subject',
+			valueField: 'subjectID',
+			displayField: 'subjectName',
 			editable: false,
-			fieldLabel: '学科类别'
+			fieldLabel: '学科',
+			bind: '{theKclist.subjectID}'
 		},{
 			xtype: 'combo',
-			name: 'sectionName',
-			store: {
-				fields: ['value'],
-				data : [
-					{"value":"幼儿"},
-					{"value":"小学"},
-					{"value":"初中"},
-					{"value":"高中"}
-				]
-			},
-			valueField: 'value',
-			displayField: 'value',
+			name: 'gradeID',
+			store: 'Grade', // Ext.getStore('Grade')
+			valueField: 'gradeID',
+			displayField: 'gradeName',
 			editable: false,
-			fieldLabel: '学段'
+			fieldLabel: '年级',
+			bind: '{theKclist.gradeID}'
 		},{
 			xtype: 'numberfield',
 			name : 'unitprice',
-			fieldLabel: '一对一单价'
+			fieldLabel: '一对一单价',
+			bind: '{theKclist.unitprice}'
 		},{
 			xtype: 'numberfield',
 			name : 'hour',
-			fieldLabel: '班级课时数'
+			fieldLabel: '班级课时数',
+			bind: '{theKclist.hour}'
 		},{
 			xtype: 'numberfield',
 			name : 'amount',
-			fieldLabel: '班级收费金额'
+			fieldLabel: '收费金额',
+			bind: '{theKclist.amount}'
+			
 		},{
 			xtype: 'hiddenfield',
-			name: 'kclistID', //修改的唯一id,隐藏
+			name: 'kclistID', //修改的唯一id,隐藏unique
+			bind: '{theKclist.kclistID}'
 		}],
 	}],
 	
@@ -93,52 +91,17 @@ Ext.define('Youngshine.view.kclist.Edit', {
 		width: 45,
 		action: 'save',
 		//scope: this,
-		handler: function(btn){
-			btn.up('window').onSave();
-		}
+		handler: 'onSaveEdit'
 	},{
 		text: '取消',
 		width: 45,
 		//scope: this,
-		handler: function(btn){
-			btn.up('window').destroy();
-			//this.close();
-		}
+		//handler: 'onClose'
+        listeners: {
+            // Call is routed to our ViewController (Ticket.view.user.UserController) but
+            // the "closeView" method is a helper inherited from Ext.app.ViewController.
+            click: 'closeView'
+        }
 	}],	
-	
-	onSave: function(){
-		var me = this;
-		var title = this.down('textfield[name=title]').getValue().trim(),
-			kcType = this.down('combo[name=kcType]').getValue(),
-			kmType = this.down('combo[name=kmType]').getValue(),
-			sectionName = this.down('combo[name=sectionName]').getValue(),
-			unitprice = this.down('numberfield[name=unitprice]').getValue(),
-			hour = this.down('numberfield[name=hour]').getValue(),
-			amount = this.down('numberfield[name=amount]').getValue(),
-			kclistID = this.down('hiddenfield[name=kclistID]').getValue() // unique
 
-		if (title == ''){
-			Ext.Msg.alert('提示','课程名称不能空白');
-			return;
-		}
-		
-		var obj = {
-			"title": title,
-			"kcType": kcType,
-			"kmType": kmType,
-			"sectionName": sectionName,
-			"unitprice": unitprice,
-			"hour": hour,
-			"amount": amount,
-			"kclistID": kclistID
-		};
-		console.log(obj);
-		
-		Ext.Msg.confirm('询问','确认修改保存？',function(id){
-			if( id == "yes"){
-				//me.close();
-				me.fireEvent('save',obj,me); //后台数据判断，才能关闭  本窗口win
-			}
-		})
-	}
 });

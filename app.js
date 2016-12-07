@@ -10,7 +10,7 @@ Ext.application({
 
     requires: [
         //'Youngshine.view.main.Main'
-		'Youngshine.*'
+		//'Youngshine.*'
     ],
 
     // The name of the initial view to create. With the classic toolkit this class

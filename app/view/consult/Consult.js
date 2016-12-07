@@ -47,9 +47,7 @@ Ext.define('Youngshine.view.consult.Consult' ,{
 		xtype: 'button',
 		text: '关闭',
 		width: 65,
-	    handler: function(btn){
-			btn.up('window').close();
-	    }
+	    handler: 'closeView'
 	}],
 
 	items: [{

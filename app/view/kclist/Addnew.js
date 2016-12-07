@@ -1,6 +1,8 @@
-Ext.define('Youngshine.view.kclist.New', {
+Ext.define('Youngshine.view.kclist.Addnew', {
     extend: 'Ext.window.Window',
-    alias : 'widget.kclist-new',
+    //alias : 'widget.kclist-new',
+	
+	controller: 'kclist',
 
     title : '新增课程',
     //layout: 'fit',
@@ -14,6 +16,7 @@ Ext.define('Youngshine.view.kclist.New', {
 	
 	items: [{
 		xtype: 'form',
+		reference: 'addnewform',
 		bodyPadding: 10,
 		fieldDefaults: {
 			labelWidth: 95,
@@ -40,36 +43,20 @@ Ext.define('Youngshine.view.kclist.New', {
 			fieldLabel: '类型'
 		},{
 			xtype: 'combo',
-			name: 'kmType',
-			store: {
-				fields: ['value'],
-				data : [
-					{"value":"数理化"},
-					{"value":"语政英"},
-					{"value":"史地生"},
-					{"value":"艺术"}
-				]
-			},
-			valueField: 'value',
-			displayField: 'value',
+			name: 'subjectID',
+			store: 'Subject',
+			valueField: 'subjectID',
+			displayField: 'subjectName',
 			editable: false,
-			fieldLabel: '学科类别'
+			fieldLabel: '学科',
 		},{
 			xtype: 'combo',
-			name: 'sectionName',
-			store: {
-				fields: ['value'],
-				data : [
-					{"value":"幼儿"},
-					{"value":"小学"},
-					{"value":"初中"},
-					{"value":"高中"}
-				]
-			},
-			valueField: 'value',
-			displayField: 'value',
+			name: 'gradeID',
+			store: 'Grade', // Ext.getStore('Grade')
+			valueField: 'gradeID',
+			displayField: 'gradeName',
 			editable: false,
-			fieldLabel: '学段'
+			fieldLabel: '年级',
 		},{
 			xtype: 'numberfield',
 			name : 'unitprice',
@@ -90,6 +77,11 @@ Ext.define('Youngshine.view.kclist.New', {
 			name: 'note',
 			fieldLabel: '备注',
 			hidden: true
+			
+		},{
+			xtype: 'hiddenfield',
+			name: 'schoolID', //school
+			bind: '{schoolID}'
 		}],
 	}],
 	
@@ -98,17 +90,12 @@ Ext.define('Youngshine.view.kclist.New', {
 		width: 45,
 		action: 'save',
 		//scope: this,
-		handler: function(btn){
-			btn.up('window').onSave();
-		}
+		handler: 'onSaveAddnew'
 	},{
 		text: '取消',
 		width: 45,
 		//scope: this,
-		handler: function(btn){
-			btn.up('window').destroy();
-			//this.close();
-		}
+		handler: 'closeView'
 	}],	
    
 	onSave: function(){

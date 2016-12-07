@@ -8,14 +8,15 @@ Ext.define('Youngshine.Application', {
     
     name: 'Youngshine',
 	
-	dataUrl: 'http://www.xzpt.org/ghjy_dean/script/',  //服务端脚本位置php
+	dataUrl: 'http://www.xzpt.org/ghjy_dean_ext/script/',  //服务端脚本位置php
 	
     controllers: [
         'Root'
     ],
 
     stores: [
-        // TODO: add global / shared stores here
+        // TODO: add global / shared stores here 固定数据的表
+		'Subject','Grade'
     ],
     
     launch: function () {
